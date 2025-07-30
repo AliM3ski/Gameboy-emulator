@@ -15,7 +15,7 @@ typedef struct {
 	u8 rom_size;
 	u8 ram_size;
 	u8 dest_code;
-	u8 lic_code;
+	u8 license_code;
 	u8 version;
 	u8 checksum;
 	u16 global_checksum;
