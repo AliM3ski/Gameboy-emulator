@@ -1,0 +1,8 @@
+# ninja log v6
+5	41	7755537601954406	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+43	112	7755537602343674	lib/CMakeFiles/emu.dir/bus.c.obj	3696a918e22bd12c
+52	146	7755537602435903	lib/CMakeFiles/emu.dir/cpu.c.obj	3e9e0721c7b39a00
+62	154	7755537602531468	lib/CMakeFiles/emu.dir/ppu.c.obj	73acba15d7e9ff51
+65	155	7755537602571482	lib/CMakeFiles/emu.dir/timer.c.obj	c0b8a57cff0c3d86
+72	158	7755537602626621	gbemu/CMakeFiles/gbemu.dir/main.c.obj	cc9d178dfe73298d
+77	174	7755537602676619	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	b891de1787abc664

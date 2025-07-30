@@ -60,7 +60,7 @@ int emu_run(int argc, char **argv) {
 
 		if (!cpu_step()) {
 			printf("CPU Stopped\n");
-			return -3
+			return -3;
 		}
 		context.ticks++;
 	}
