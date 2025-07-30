@@ -3,3 +3,5 @@
 int main(int argc, char **argv) {
 	return emu_run(argc, argv);
 }
+// testing
+int test;
