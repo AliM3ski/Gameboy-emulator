@@ -161,7 +161,8 @@ bool cart_load(char *cart) {
 	printf("\t Title	: %s\n", context.header->title);
 	printf("\t Type		: %2.2X (%s)\n", context.header->type, cart_type_name());
 	printf("\t ROM Size	: %d KB\n", 32 << context.header->rom_size);
-	printf("\t RAM Size	: %2.2X (%s)\n", context.header->license_code, cart_license_name());
+    printf("\t RAM Size	: %2.2X\n", context.header->ram_size);
+	printf("\t LIC Code	: %2.2X (%s)\n", context.header->license_code, cart_license_name());
 	printf("\t ROM Vers	: %2.2X\n", context.header->version);
 
 	// checksum, see more pandocs 014D
@@ -174,4 +175,14 @@ bool cart_load(char *cart) {
 
 	return true;
 
+}
+
+u8 cart_read(u16 address) {
+    // for now just use ROM ONLY type support
+
+    return context.rom_data[address];
+}
+void cart_write(u16 address, u8 value) {
+
+    NO_IMPL
 }

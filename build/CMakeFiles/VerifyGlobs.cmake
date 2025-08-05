@@ -10,6 +10,7 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/common.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/cpu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/emu.h"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/instructions.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ppu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/timer.h"
   )
@@ -24,7 +25,9 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/bus.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cart.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu.util.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/emu.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/instructions.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/timer.c"
   )
