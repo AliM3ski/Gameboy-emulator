@@ -1,4 +1,6 @@
 #include <bus.h>
+#include <cart.h>
+
 // 0x0000 - 0x3FFF : ROM Bank 0
 // 0x4000 - 0x7FFF : ROM Bank 1 - Switchable
 // 0x8000 - 0x8FFF : CHR RAM
@@ -13,17 +15,17 @@
 // 0xFF00 - 0xFF7F : I/O Registers
 // 0xFF80 - 0xFFFF : Zero Page
 
-u8 bus_read(u16 address); {
+u8 bus_read(u16 address) {
 	// below 0x8000 is rom data
 	if (address < 0x8000) {
 		// ROM Data
 		return cart_read(address);
 	}
 
-	No_IMPL
+	NO_IMPL
 
 }
-void bus_write(u16 address, u8 value); {
+void bus_write(u16 address, u8 value) {
 	if (address < 0x8000) {
 		//ROM Data
 		cart_write(address, value); 

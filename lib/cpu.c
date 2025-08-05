@@ -3,6 +3,7 @@
 #include <emu.h>
 
 cpu_context context = {0};
+
 void cpu_init() {
 	context.regs.pc = 0x100;
 
@@ -35,12 +36,14 @@ static void fetch_data() {
 			emu_cycles(1);
 			context.regs.pc++;
 			return; 
+
 		case AM_D16: {
 			u16 lo = bus_read(context.regs.pc);
 			emu_cycles(1);
 
 			u16 hi = bus_read(context.regs.pc + 1);
 			emu_cycles(1);
+
 			context.fetch_data = lo | (hi << 8);
 
 			context.regs.pc += 2;
@@ -63,6 +66,7 @@ static void execute(){
 bool cpu_step(){
 	if (!context.halted) {
 		u16 pc = context.regs.pc;
+		
 		fetch_instruction();
 		fetch_data();
 

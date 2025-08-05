@@ -161,9 +161,9 @@ build lib/CMakeFiles/emu.dir/cpu.c.obj: C_COMPILER__emu_unscanned_Debug C$:/User
   TARGET_COMPILE_PDB = lib\CMakeFiles\emu.dir\emu.pdb
   TARGET_PDB = lib\libemu.pdb
 
-build lib/CMakeFiles/emu.dir/cpu.util.c.obj: C_COMPILER__emu_unscanned_Debug C$:/Users/AliMe/VsCodeProjects/Gameboy$ emulator/lib/cpu.util.c || cmake_object_order_depends_target_emu
+build lib/CMakeFiles/emu.dir/cpu_util.c.obj: C_COMPILER__emu_unscanned_Debug C$:/Users/AliMe/VsCodeProjects/Gameboy$ emulator/lib/cpu_util.c || cmake_object_order_depends_target_emu
   DEFINES = -DHAVE_CONFIG_H
-  DEP_FILE = lib\CMakeFiles\emu.dir\cpu.util.c.obj.d
+  DEP_FILE = lib\CMakeFiles\emu.dir\cpu_util.c.obj.d
   FLAGS = -g
   INCLUDES = -I"C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build" -I"C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include" -I"C:/Users/AliMe/VsCodeProjects/Gameboy emulator/../windows_deps/sdl2/include" -I"C:/Users/AliMe/VsCodeProjects/Gameboy emulator/../windows_deps/sdl2_ttf/include" -I/usr/local/include -I"C:/Users/AliMe/VsCodeProjects/Gameboy emulator/../windows_deps/sdl2/include/SDL2"
   OBJECT_DIR = lib\CMakeFiles\emu.dir
@@ -219,7 +219,7 @@ build lib/CMakeFiles/emu.dir/timer.c.obj: C_COMPILER__emu_unscanned_Debug C$:/Us
 #############################################
 # Link the static library lib\libemu.a
 
-build lib/libemu.a: C_STATIC_LIBRARY_LINKER__emu_Debug lib/CMakeFiles/emu.dir/bus.c.obj lib/CMakeFiles/emu.dir/cart.c.obj lib/CMakeFiles/emu.dir/cpu.c.obj lib/CMakeFiles/emu.dir/cpu.util.c.obj lib/CMakeFiles/emu.dir/emu.c.obj lib/CMakeFiles/emu.dir/instructions.c.obj lib/CMakeFiles/emu.dir/ppu.c.obj lib/CMakeFiles/emu.dir/timer.c.obj
+build lib/libemu.a: C_STATIC_LIBRARY_LINKER__emu_Debug lib/CMakeFiles/emu.dir/bus.c.obj lib/CMakeFiles/emu.dir/cart.c.obj lib/CMakeFiles/emu.dir/cpu.c.obj lib/CMakeFiles/emu.dir/cpu_util.c.obj lib/CMakeFiles/emu.dir/emu.c.obj lib/CMakeFiles/emu.dir/instructions.c.obj lib/CMakeFiles/emu.dir/ppu.c.obj lib/CMakeFiles/emu.dir/timer.c.obj
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = lib\CMakeFiles\emu.dir
   POST_BUILD = cd .

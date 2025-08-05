@@ -34,3 +34,5 @@ typedef struct {
 
 void cpu_init();
 bool cpu_step();
+
+u16 cpu_read_reg(reg_type rt);
