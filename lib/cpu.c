@@ -21,7 +21,7 @@ static void fetch_instruction() {
 }
 
 static void fetch_data() {
-	context.mem_dest - 0;
+	context.mem_dest = 0;
 	context.dest_is_mem = false;
 
 	switch(context.cur_inst->mode) {
@@ -74,5 +74,5 @@ bool cpu_step(){
 
 		execute();
 	}
-	return  true;
+	return true;
 }

@@ -1,17 +1,15 @@
 # ninja log v6
-8	79	7761276170698683	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-125	308	7761276171954138	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
-156	316	7761276172184929	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
-147	336	7761276172109169	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
-142	338	7761276172041715	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
-108	339	7761276171706610	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
-163	349	7761276172254001	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
-90	366	7761276171536573	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
-98	372	7761276171599866	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
-118	887	7761276171809153	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
-52	131	7761277979380166	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-32	108	7761278166433584	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-115	337	7761278167235480	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
-339	555	7761278169465781	lib/libemu.a	842a9160cc1f2dc7
-568	798	7761278171768701	tests/check_gbe.exe	ec51799f270cd620
-556	1003	7761278171631437	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+9	77	7762119677644594	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+80	258	7762119678402971	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
+104	340	7762119678637299	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
+123	359	7762119678829727	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
+117	363	7762119678743395	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
+137	365	7762119679552128	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
+90	367	7762119678457817	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
+131	387	7762119678866354	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
+97	388	7762119678538524	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
+209	390	7762119679675938	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
+110	1030	7762119678697466	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
+1031	1204	7762119687907489	lib/libemu.a	842a9160cc1f2dc7
+1219	1416	7762119689795940	tests/check_gbe.exe	ec51799f270cd620
+1205	1799	7762119689631972	gbemu/gbemu.exe	9fd6029d4ba8ee6d
