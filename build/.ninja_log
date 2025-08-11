@@ -1,31 +1,15 @@
 # ninja log v6
-141	411	7766374367898635	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
-184	411	7766374368364146	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
-134	416	7766374367826511	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
-51	120	7766374367033654	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-161	1058	7766374368223765	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
-177	383	7766374368282535	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
-4557	4728	7766368258351709	lib/libemu.a	8d5f10e4ed5d5fdb
-205	430	7766374368562480	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
-141	321	7766368214185745	lib/CMakeFiles/emu.dir/cpu_proc.c.obj	60c4804f390d69ba
-4742	4930	7766368260209373	tests/check_gbe.exe	ec51799f270cd620
-4728	5184	7766368260054991	gbemu/gbemu.exe	9fd6029d4ba8ee6d
-197	425	7766374368496456	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
-127	381	7766374367751631	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
-191	426	7766374368433713	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
-156	386	7766374368077767	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
-45	97	7766374987098580	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-102	306	7766374987665079	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
-145	332	7766374988086660	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
-128	342	7766374987917796	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
-152	343	7766374988158658	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
-173	345	7766374988358090	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
-160	347	7766374988296522	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
-114	360	7766374987779903	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
-108	361	7766374987717868	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
-119	368	7766374987831159	lib/CMakeFiles/emu.dir/cpu_proc.c.obj	60c4804f390d69ba
-180	371	7766374988422068	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
-135	902	7766374987988275	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
-902	1068	7766374995661672	lib/libemu.a	8d5f10e4ed5d5fdb
-1082	1254	7766374997441407	tests/check_gbe.exe	ec51799f270cd620
-1068	1516	7766374997313426	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+9	77	7762119677644594	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+80	258	7762119678402971	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
+104	340	7762119678637299	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
+123	359	7762119678829727	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
+117	363	7762119678743395	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
+137	365	7762119679552128	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
+90	367	7762119678457817	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
+131	387	7762119678866354	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
+97	388	7762119678538524	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
+209	390	7762119679675938	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
+110	1030	7762119678697466	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
+1031	1204	7762119687907489	lib/libemu.a	842a9160cc1f2dc7
+1219	1416	7762119689795940	tests/check_gbe.exe	ec51799f270cd620
+1205	1799	7762119689631972	gbemu/gbemu.exe	9fd6029d4ba8ee6d

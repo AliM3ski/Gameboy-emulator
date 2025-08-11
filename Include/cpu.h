@@ -30,8 +30,6 @@ typedef struct {
 
 	bool halted;
 	bool stepping;
-
-	bool int_master_enabled;
 } cpu_context;
 
 void cpu_init();
@@ -39,10 +37,4 @@ bool cpu_step();
 
 u16 cpu_read_reg(reg_type rt);
 
-typedef void (*IN_PROC)(cpu_context *);
-
-IN_PROC inst_get_processor(in_type type);
-
-#define CPU_FLAG_Z BIT(context->regs.f, 7) // zero flag
-#define CPU_FLAG_C BIT(context->regs.f, 4) // carry flag
-
+typedef void (*IN_PROC)(cpu_context)
