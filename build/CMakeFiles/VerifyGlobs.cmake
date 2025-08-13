@@ -25,6 +25,8 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/bus.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cart.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu_fetch.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu_proc.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu_util.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/emu.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/instructions.c"

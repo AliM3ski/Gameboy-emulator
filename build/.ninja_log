@@ -1,15 +1,39 @@
 # ninja log v6
-9	77	7762119677644594	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
-80	258	7762119678402971	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
-104	340	7762119678637299	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
-123	359	7762119678829727	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
-117	363	7762119678743395	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
-137	365	7762119679552128	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
-90	367	7762119678457817	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
-131	387	7762119678866354	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
-97	388	7762119678538524	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
-209	390	7762119679675938	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
-110	1030	7762119678697466	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
-1031	1204	7762119687907489	lib/libemu.a	842a9160cc1f2dc7
-1219	1416	7762119689795940	tests/check_gbe.exe	ec51799f270cd620
-1205	1799	7762119689631972	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+156	345	7767716657005969	lib/CMakeFiles/emu.dir/cpu_util.c.obj	2b6647c5488821ba
+535	1184	7767721578140976	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+202	375	7767711010344132	gbemu/CMakeFiles/gbemu.dir/main.c.obj	6c3b0c562e3865c3
+168	365	7767716657127381	lib/CMakeFiles/emu.dir/instructions.c.obj	9f9d7ad2fd59964
+188	373	7767711010196239	lib/CMakeFiles/emu.dir/ppu.c.obj	a7efb7f1b2e72e39
+132	341	7767716656774622	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
+41	104	7767722284603528	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+119	348	7767721573963800	lib/CMakeFiles/emu.dir/cpu_fetch.c.obj	dfb9326007e0a329
+134	360	7767711009605996	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
+176	366	7767716657203541	tests/CMakeFiles/check_gbe.dir/check_gbe.c.obj	9ae4034d1141c976
+162	1053	7767716657043901	lib/CMakeFiles/emu.dir/emu.c.obj	2e8db7270793e049
+147	373	7767716656918368	lib/CMakeFiles/emu.dir/cpu_proc.c.obj	60c4804f390d69ba
+551	861	7767721578290205	tests/check_gbe.exe	ec51799f270cd620
+349	535	7767721576269275	lib/libemu.a	3de883e042893763
+125	376	7767716656692860	lib/CMakeFiles/emu.dir/bus.c.obj	be1f9744dc191847
+195	372	7767711010269896	lib/CMakeFiles/emu.dir/timer.c.obj	3dbe53a06009eb1b
+53	118	7768072924813655	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+126	400	7768072925561124	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
+401	675	7768072928310603	lib/libemu.a	3de883e042893763
+690	885	7768072931202344	tests/check_gbe.exe	ec51799f270cd620
+675	1169	7768072931033833	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+54	126	7768074177701523	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+29	76	7768074253131000	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+80	257	7768074253643493	lib/CMakeFiles/emu.dir/cpu.c.obj	5a3038041580861f
+86	265	7768074253703492	lib/CMakeFiles/emu.dir/cpu_fetch.c.obj	dfb9326007e0a329
+266	403	7768074255488815	lib/libemu.a	3de883e042893763
+421	616	7768074257048697	tests/check_gbe.exe	ec51799f270cd620
+404	937	7768074256885556	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+52	116	7768075389515732	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+122	334	7768075390207496	lib/CMakeFiles/emu.dir/cpu_fetch.c.obj	dfb9326007e0a329
+335	526	7768075392334770	lib/libemu.a	3de883e042893763
+545	750	7768075394444105	tests/check_gbe.exe	ec51799f270cd620
+527	1049	7768075394265011	gbemu/gbemu.exe	9fd6029d4ba8ee6d
+47	116	7768081139189025	C:/Users/AliMe/VsCodeProjects/Gameboy emulator/build/CMakeFiles/cmake.verify_globs	92ff19c63d36400f
+123	365	7768081139940292	lib/CMakeFiles/emu.dir/cart.c.obj	f05f3276be9da19e
+366	593	7768081142371688	lib/libemu.a	3de883e042893763
+611	813	7768081144823008	tests/check_gbe.exe	ec51799f270cd620
+594	1098	7768081144648040	gbemu/gbemu.exe	9fd6029d4ba8ee6d

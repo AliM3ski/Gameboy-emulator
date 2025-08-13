@@ -5,3 +5,6 @@ https://gbdev.io/pandocs/
 
 Below is a link for the Gamboy CPU (LR35902) instruction set 
 https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+
+gameboy complete technical reference Below
+https://gekkio.fi/files/gb-docs/gbctr.pdf

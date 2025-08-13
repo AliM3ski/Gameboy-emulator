@@ -25,16 +25,25 @@ typedef struct {
 	u16 fetch_data;
 	u16 mem_dest;
 	bool dest_is_mem;
-	u8 cur_optcode;
+	u8 cur_opcode;
 	instruction *cur_inst;
 
 	bool halted;
 	bool stepping;
+	
+	bool int_master_enabled;
+
 } cpu_context;
 
 void cpu_init();
 bool cpu_step();
 
-u16 cpu_read_reg(reg_type rt);
+typedef void (*IN_PROC)(cpu_context *);
 
-typedef void (*IN_PROC)(cpu_context)
+IN_PROC inst_get_processor(in_type type);
+
+#define CPU_FLAG_Z BIT(context->regs.f, 7)
+#define CPU_FLAG_C BIT(context->regs.f, 4)
+
+u16 cpu_read_reg(reg_type rt);
+void cpu_set_reg(reg_type rt, u16 val);
