@@ -1,10 +1,10 @@
 #include <cart.h>
 
 typedef struct {
-	char filename[1024];
-	u32 rom_size;
-	u8 *rom_data;
-	rom_header *header;
+    char filename[1024];
+    u32 rom_size;
+    u8 *rom_data;
+    rom_header *header;
 } cart_context;
 
 static cart_context context;
@@ -47,7 +47,7 @@ static const char *ROM_TYPES[] = {
     "MBC7+SENSOR+RUMBLE+RAM+BATTERY",
 };
 
-static const char *LICENSE_CODE[0xA5] = {
+static const char *LIC_CODE[0xA5] = {
     [0x00] = "None",
     [0x01] = "Nintendo R&D1",
     [0x08] = "Capcom",
@@ -111,79 +111,73 @@ static const char *LICENSE_CODE[0xA5] = {
     [0xA4] = "Konami (Yu-Gi-Oh!)"
 };
 
+const char *cart_lic_name() {
+    if (context.header->new_lic_code <= 0xA4) {
+        return LIC_CODE[context.header->lic_code];
+    }
 
-// gets license name of game
-const char *cart_license_name() {
-	if (context.header->new_license_code <0xA4) {
-		return LICENSE_CODE[context.header->license_code];
-	}
-
-	return "UNKNOWN";
+    return "UNKNOWN";
 }
 
-// get cartridge type of game
 const char *cart_type_name() {
-	if (context.header->type <= 0x22) {
-		return ROM_TYPES[context.header->type];
-	}
+    if (context.header->type <= 0x22) {
+        return ROM_TYPES[context.header->type];
+    }
 
-	return "UNKNOWN";
+    return "UNKNOWN";
 }
 
 bool cart_load(char *cart) {
-	snprintf(context.filename, sizeof(context.filename), "%s", cart);
+    snprintf(context.filename, sizeof(context.filename), "%s", cart);
 
-	FILE *fp = fopen(cart, "r");
+    FILE *fp = fopen(cart, "r");
 
-	if (!fp) {
-		printf("Failed to open: %s\n", cart);
-		return false;
-	}
+    if (!fp) {
+        printf("Failed to open: %s\n", cart);
+        return false;
+    }
 
-	printf("Opened: %s\n", context.filename);
+    printf("Opened: %s\n", context.filename);
 
-	// go to end of cart to see how big cart/rom size is
-	fseek(fp, 0, SEEK_END);
-	context.rom_size = ftell(fp);
+    fseek(fp, 0, SEEK_END);
+    context.rom_size = ftell(fp);
 
-	// go back to start of cart/rom
-	rewind(fp);
+    rewind(fp);
 
-	context.rom_data = malloc(context.rom_size);
-	fread(context.rom_data, context.rom_size, 1, fp);
-	fclose(fp);
+    context.rom_data = malloc(context.rom_size);
+    fread(context.rom_data, context.rom_size, 1, fp);
+    fclose(fp);
 
-	context.header = (rom_header *)(context.rom_data + 0x100);
-	context.header->title[15] = 0;
+    context.header = (rom_header *)(context.rom_data + 0x100);
+    context.header->title[15] = 0;
 
-	// print cart data
-	printf("Cartridge Loaded:\n");
-	printf("\t Title	: %s\n", context.header->title);
-	printf("\t Type		: %2.2X (%s)\n", context.header->type, cart_type_name());
-	printf("\t ROM Size	: %d KB\n", 32 << context.header->rom_size);
-    printf("\t RAM Size	: %2.2X\n", context.header->ram_size);
-	printf("\t LIC Code	: %2.2X (%s)\n", context.header->license_code, cart_license_name());
-	printf("\t ROM Vers	: %2.2X\n", context.header->version);
+    printf("Cartridge Loaded:\n");
+    printf("\t Title    : %s\n", context.header->title);
+    printf("\t Type     : %2.2X (%s)\n", context.header->type, cart_type_name());
+    printf("\t ROM Size : %d KB\n", 32 << context.header->rom_size);
+    printf("\t RAM Size : %2.2X\n", context.header->ram_size);
+    printf("\t LIC Code : %2.2X (%s)\n", context.header->lic_code, cart_lic_name());
+    printf("\t ROM Vers : %2.2X\n", context.header->version);
 
-	// checksum, see more pandocs 014D
-	u16 x = 0;
-	for (u16 i=0x0134; i<=0x014C; i++) {
-		x = x - context.rom_data[i] - 1;
-	}
+    u16 x = 0;
+    for (u16 i=0x0134; i<=0x014C; i++) {
+        x = x - context.rom_data[i] - 1;
+    }
 
-	printf("\t Checksum : %2.2X (%s)\n", context.header->checksum, (x & 0xFF) ? "PASSED" : "FAILED");
+    printf("\t Checksum : %2.2X (%s)\n", context.header->checksum, (x & 0xFF) ? "PASSED" : "FAILED");
 
-	return true;
-
+    return true;
 }
 
 u8 cart_read(u16 address) {
-    // for now just use ROM ONLY type support
+    //for now just ROM ONLY type supported...
 
     return context.rom_data[address];
 }
-void cart_write(u16 address, u8 value) {
 
-    printf("cart write(%04X)\n", address);
+void cart_write(u16 address, u8 value) {
+    //for now, ROM ONLY...
+
+    printf("cart_write(%04X)\n", address);
     NO_IMPL
 }

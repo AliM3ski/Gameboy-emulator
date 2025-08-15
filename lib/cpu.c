@@ -34,17 +34,23 @@ bool cpu_step() {
         fetch_instruction();
         fetch_data();
 
-        printf("%04X: %-7s (%02X %02X %02X) A: %02X B: %02X C: %02X\n", 
+        printf("%04X: %-7s (%02X %02X %02X) A: %02X BC: %02X%02X DE: %02X%02X HL: %02X%02X\n", 
             pc, inst_name(context.cur_inst->type), context.cur_opcode,
-            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, context.regs.b, context.regs.c);
+            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, context.regs.b, context.regs.c, context.regs.d, context.regs.e, context.regs.h, context.regs.l);
 
         if (context.cur_inst == NULL) {
             printf("Unknown Instruction! %02X\n", context.cur_opcode);
             exit(-7);
         }
-
         execute();
     }
 
     return true;
+}
+
+u8 cpu_get_ie_register() {
+    return context.ie_register;
+}
+void cpu_set_ie_register(u8 n) {
+    context.ie_register = n;
 }
