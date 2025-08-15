@@ -13,6 +13,7 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/instructions.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ppu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ram.h"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/stack.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/timer.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -33,6 +34,7 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/instructions.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ram.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/stack.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/timer.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
