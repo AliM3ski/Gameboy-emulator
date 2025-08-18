@@ -32,11 +32,20 @@ bool cpu_step() {
         u16 pc = context.regs.pc;
 
         fetch_instruction();
+        emu_cycles(1);
         fetch_data();
 
-        printf("%04X: %-7s (%02X %02X %02X) A: %02X BC: %02X%02X DE: %02X%02X HL: %02X%02X\n", 
-            pc, inst_name(context.cur_inst->type), context.cur_opcode,
-            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, context.regs.b, context.regs.c, context.regs.d, context.regs.e, context.regs.h, context.regs.l);
+        char flags[16];
+        sprintf(flags, "%c%c%c%c", 
+            context.regs.f & (1 << 7) ? 'Z' : '-',
+            context.regs.f & (1 << 6) ? 'N' : '-',
+            context.regs.f & (1 << 5) ? 'H' : '-',
+            context.regs.f & (1 << 4) ? 'C' : '-'
+        );
+
+        printf("%08lX - %04X: %-7s (%02X %02X %02X) A: %02X F: %s BC: %02X%02X DE: %02X%02X HL: %02X%02X\n", 
+            emu_get_context()->ticks, pc, inst_name(context.cur_inst->type), context.cur_opcode,
+            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, flags, context.regs.b, context.regs.c, context.regs.d, context.regs.e, context.regs.h, context.regs.l);
 
         if (context.cur_inst == NULL) {
             printf("Unknown Instruction! %02X\n", context.cur_opcode);
