@@ -1,11 +1,11 @@
 // defines structure and types needed to represent CPU instructions
 
-#pragma once 
+#pragma once
+
 #include <common.h>
 
 typedef enum {
-
-	AM_IMP,
+    AM_IMP,
     AM_R_D16,
     AM_R_R,
     AM_MR_R,
@@ -47,70 +47,68 @@ typedef enum {
 } reg_type;
 
 typedef enum {
-	IN_NONE,
-	IN_NOP,
-	IN_LD,
-	IN_INC,
-	IN_DEC,
-	IN_RLCA,
-	IN_ADD,
-	IN_RRCA,
-	IN_STOP,
-	IN_RLA,
-	IN_JR,
-	IN_RRA,
-	IN_DAA,
-	IN_CPL,
-	IN_SCF,
-	IN_CCF,
-	IN_HALT,
-	IN_ADC,
-	IN_SUB,
-	IN_SBC,
-	IN_AND,
-	IN_XOR,
-	IN_OR,
-	IN_CP,
-	IN_POP,
-	IN_JP,
-	IN_PUSH,
-	IN_RET,
-	IN_CB,
-	IN_CALL,
-	IN_RETI,
-	IN_LDH,
-	IN_JPHL,
-	IN_DI,
-	IN_EI,
-	IN_RST,
-	IN_ERR,
-
-	// Special CB instructions...
-	IN_RLC,
-	IN_RRC,
-	IN_RL,
-	IN_RR,
-	IN_SLA,
-	IN_SRA,
-	IN_SWAP,
-	IN_SRL,
-	IN_BIT,
-	IN_RES,
-	IN_SET
-
+    IN_NONE,
+    IN_NOP,
+    IN_LD,
+    IN_INC,
+    IN_DEC,
+    IN_RLCA,
+    IN_ADD,
+    IN_RRCA,
+    IN_STOP,
+    IN_RLA,
+    IN_JR,
+    IN_RRA,
+    IN_DAA,
+    IN_CPL,
+    IN_SCF,
+    IN_CCF,
+    IN_HALT,
+    IN_ADC,
+    IN_SUB,
+    IN_SBC,
+    IN_AND,
+    IN_XOR,
+    IN_OR,
+    IN_CP,
+    IN_POP,
+    IN_JP,
+    IN_PUSH,
+    IN_RET,
+    IN_CB,
+    IN_CALL,
+    IN_RETI,
+    IN_LDH,
+    IN_JPHL,
+    IN_DI,
+    IN_EI,
+    IN_RST,
+    IN_ERR,
+    //CB instructions...
+    IN_RLC, 
+    IN_RRC,
+    IN_RL, 
+    IN_RR,
+    IN_SLA, 
+    IN_SRA,
+    IN_SWAP, 
+    IN_SRL,
+    IN_BIT, 
+    IN_RES, 
+    IN_SET
 } in_type;
 
 typedef enum {
-	CT_NONE, CT_NZ, CT_Z, CT_NC, CT_C
-} condition_type;
+    CT_NONE, CT_NZ, CT_Z, CT_NC, CT_C
+} cond_type;
 
 typedef struct {
-	in_type type;           // What instruction it is (e.g., IN_LD)
-	addr_mode mode;         // How operands are accessed
-	reg_type reg_1;         // First operand register
-	reg_type reg_2;         // Second operand register
-	condition_type cond;    // Any condition to check
-	u8 param;               // Extra parameter (e.g., immediate value or encoded info)
+    in_type type;
+    addr_mode mode;
+    reg_type reg_1;
+    reg_type reg_2;
+    cond_type cond;
+    u8 param;
 } instruction;
 
 instruction *instruction_by_opcode(u8 opcode);

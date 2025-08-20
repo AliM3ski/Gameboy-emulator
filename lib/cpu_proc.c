@@ -5,7 +5,7 @@
 
 //processes CPU instructions...
 
-void cpu_set_flags(cpu_context *context, char z, char n, char h, char c) {
+void cpu_set_flags(cpu_context *context, int8_t z, int8_t n, int8_t h, int8_t c) {
     if (z != -1) {
         BIT_SET(context->regs.f, 7, z);
     }
@@ -30,6 +30,162 @@ static void proc_none(cpu_context *context) {
 
 static void proc_nop(cpu_context *context) {
 
+}
+
+reg_type rt_lookup[] = {
+    RT_B,
+    RT_C,
+    RT_D,
+    RT_E,
+    RT_H,
+    RT_L,
+    RT_HL,
+    RT_A
+};
+
+reg_type decode_reg(u8 reg) {
+    if (reg > 0b111) {
+        return RT_NONE;
+    }
+
+    return rt_lookup[reg];
+}
+
+static void proc_cb(cpu_context *context) {
+    u8 op = context->fetch_data;
+    reg_type reg = decode_reg(op & 0b111);
+    u8 bit = (op >> 3) & 0b111;
+    u8 bit_op = (op >> 6) & 0b11;
+    u8 reg_val = cpu_read_reg8(reg);
+
+    emu_cycles(1);
+
+    if (reg == RT_HL) {
+        emu_cycles(2);
+    }
+
+    switch(bit_op) {
+        case 1:
+            //BIT
+            cpu_set_flags(context, !(reg_val & (1 << bit)), 0, 1, -1);
+            return;
+
+        case 2:
+            //RST
+            reg_val &= ~(1 << bit);
+            cpu_set_reg8(reg, reg_val);
+            return;
+
+        case 3:
+            //SET
+            reg_val |= (1 << bit);
+            cpu_set_reg8(reg, reg_val);
+            return;
+    }
+
+    bool flagC = CPU_FLAG_C;
+
+    switch(bit) {
+        case 0: {
+            //RLC
+            bool setC = false;
+            u8 result = (reg_val << 1) & 0xFF;
+
+            if ((reg_val & (1 << 7)) != 0) {
+                result |= 1;
+                setC = true;
+            }
+
+            cpu_set_reg8(reg, result);
+            cpu_set_flags(context, result == 0, false, false, setC);
+        } return;
+
+        case 1: {
+            //RRC
+            u8 old = reg_val;
+            reg_val >>= 1;
+            reg_val |= (old << 7);
+
+            cpu_set_reg8(reg, reg_val);
+            cpu_set_flags(context, !reg_val, false, false, old & 1);
+        } return;
+
+        case 2: {
+            //RL
+            u8 old = reg_val;
+            reg_val <<= 1;
+            reg_val |= flagC;
+
+            cpu_set_reg8(reg, reg_val);
+            cpu_set_flags(context, !reg_val, false, false, !!(old & 0x80));
+        } return;
+
+        case 3: {
+            //RR
+            u8 old = reg_val;
+            reg_val >>= 1;
+
+            reg_val |= (flagC << 7);
+
+            cpu_set_reg8(reg, reg_val);
+            cpu_set_flags(context, !reg_val, false, false, old & 1);
+        } return;
+
+        case 4: {
+            //SLA
+            u8 old = reg_val;
+            reg_val <<= 1;
+
+            cpu_set_reg8(reg, reg_val);
+            cpu_set_flags(context, !reg_val, false, false, !!(old & 0x80));
+        } return;
+
+        case 5: {
+            //SRA
+            u8 u = (int8_t)reg_val >> 1;
+            cpu_set_reg8(reg, u);
+            cpu_set_flags(context, !u, 0, 0, reg_val & 1);
+        } return;
+
+        case 6: {
+            //SWAP
+            reg_val = ((reg_val & 0xF0) >> 4) | ((reg_val & 0xF) << 4);
+            cpu_set_reg8(reg, reg_val);
+            cpu_set_flags(context, reg_val == 0, false, false, false);
+        } return;
+
+        case 7: {
+            //SRL
+            u8 u = reg_val >> 1;
+            cpu_set_reg8(reg, u);
+            cpu_set_flags(context, !u, 0, 0, reg_val & 1);
+        } return;
+    }
+
+    fprintf(stderr, "ERROR: INVALID CB: %02X", op);
+    NO_IMPL
+}
+
+static void proc_and(cpu_context *context) {
+    context->regs.a &= context->fetch_data;
+    cpu_set_flags(context, context->regs.a == 0, 0, 1, 0);
+}
+
+static void proc_xor(cpu_context *context) {
+    context->regs.a ^= context->fetch_data & 0xFF;
+    cpu_set_flags(context, context->regs.a == 0, 0, 0, 0);
+}
+
+static void proc_or(cpu_context *context) {
+    context->regs.a |= context->fetch_data & 0xFF;
+    cpu_set_flags(context, context->regs.a == 0, 0, 0, 0);
+}
+
+static void proc_cp(cpu_context *context) {
+    int n = (int)context->regs.a - (int)context->fetch_data;
+
+    cpu_set_flags(context, n == 0, 1, 
+        ((int)context->regs.a & 0x0F) - ((int)context->fetch_data & 0x0F) < 0, n < 0);
 }
 
 static void proc_di(cpu_context *context) {
@@ -66,7 +222,7 @@ static void proc_ld(cpu_context *context) {
 
         cpu_set_flags(context, 0, 0, hflag, cflag);
         cpu_set_reg(context->cur_inst->reg_1, 
-            cpu_read_reg(context->cur_inst->reg_2) + (char)context->fetch_data);
+            cpu_read_reg(context->cur_inst->reg_2) + (int8_t)context->fetch_data);
 
         return;
     }
@@ -82,11 +238,6 @@ static void proc_ldh(cpu_context *context) {
     }
 
     emu_cycles(1);
-}
-
-static void proc_xor(cpu_context *context) {
-    context->regs.a ^= context->fetch_data & 0xFF;
-    cpu_set_flags(context, context->regs.a == 0, 0, 0, 0);
 }
 
 
@@ -122,7 +273,7 @@ static void proc_jp(cpu_context *context) {
 }
 
 static void proc_jr(cpu_context *context) {
-    char rel = (char)(context->fetch_data & 0xFF);
+    int8_t rel = (int8_t)(context->fetch_data & 0xFF);
     u16 addr = context->regs.pc + rel;
     goto_addr(context, addr, false);
 }
@@ -241,7 +392,6 @@ static void proc_sub(cpu_context *context) {
     cpu_set_flags(context, z, 1, h, c);
 }
 
-// subtract with carry
 static void proc_sbc(cpu_context *context) {
     u8 val = context->fetch_data + CPU_FLAG_C;
 
@@ -278,7 +428,7 @@ static void proc_add(cpu_context *context) {
     }
 
     if (context->cur_inst->reg_1 == RT_SP) {
-        val = cpu_read_reg(context->cur_inst->reg_1) + (char)context->fetch_data;
+        val = cpu_read_reg(context->cur_inst->reg_1) + (int8_t)context->fetch_data;
     }
 
     int z = (val & 0xFF) == 0;
@@ -321,8 +471,12 @@ static IN_PROC processors[] = {
     [IN_ADC] = proc_adc,
     [IN_SUB] = proc_sub,
     [IN_SBC] = proc_sbc,
-    [IN_RETI] = proc_reti,
-    [IN_XOR] = proc_xor
+    [IN_AND] = proc_and,
+    [IN_XOR] = proc_xor,
+    [IN_OR] = proc_or,
+    [IN_CP] = proc_cp,
+    [IN_CB] = proc_cb,
+    [IN_RETI] = proc_reti
 };
 
 IN_PROC inst_get_processor(in_type type) {

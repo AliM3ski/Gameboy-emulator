@@ -22,7 +22,7 @@ u8 bus_read(u16 address) {
         //ROM Data
         return cart_read(address);
     } else if (address < 0xA000) {
-        //Char Map Data
+        //Char/Map Data
         // TODO
         printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
@@ -36,7 +36,7 @@ u8 bus_read(u16 address) {
         // reserved echo RAM...
         return 0;
     } else if (address < 0xFEA0) {
-        // 0AM
+        // OAM
         // TODO
         printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
@@ -54,7 +54,7 @@ u8 bus_read(u16 address) {
         return cpu_get_ie_register();
     }
     //NO_IMPL
-   return hram_read(address);
+    return hram_read(address);
 }
 
 void bus_write(u16 address, u8 value) {
