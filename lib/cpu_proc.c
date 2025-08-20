@@ -166,6 +166,83 @@ static void proc_cb(cpu_context *context) {
     NO_IMPL
 }
 
+static void proc_rlca(cpu_context *context) {
+    u8 u = context->regs.a;
+    bool c = (u >> 7) & 1;
+    u = (u << 1) | c;
+    context->regs.a = u;
+
+    cpu_set_flags(context, 0, 0, 0, c);
+}
+
+static void proc_rrca(cpu_context *context) {
+    u8 b = context->regs.a & 1;
+    context->regs.a >>= 1;
+    context->regs.a |= (b << 7);
+
+    cpu_set_flags(context, 0, 0, 0, b);
+}
+
+
+static void proc_rla(cpu_context *context) {
+    u8 u = context->regs.a;
+    u8 cf = CPU_FLAG_C;
+    u8 c = (u >> 7) & 1;
+
+    context->regs.a = (u << 1) | cf;
+    cpu_set_flags(context, 0, 0, 0, c);
+}
+
+static void proc_stop(cpu_context *context) {
+    fprintf(stderr, "STOPPING!\n");
+    NO_IMPL
+}
+
+static void proc_daa(cpu_context *context) {
+    u8 u = 0;
+    int fc = 0;
+
+    if (CPU_FLAG_H || (!CPU_FLAG_N && (context->regs.a & 0xF) > 9)) {
+        u = 6;
+    }
+
+    if (CPU_FLAG_C || (!CPU_FLAG_N && context->regs.a > 0x99)) {
+        u |= 0x60;
+        fc = 1;
+    }
+
+    context->regs.a += CPU_FLAG_N ? -u : u;
+
+    cpu_set_flags(context, context->regs.a == 0, -1, 0, fc);
+}
+
+static void proc_cpl(cpu_context *context) {
+    context->regs.a = ~context->regs.a;
+    cpu_set_flags(context, -1, 1, 1, -1);
+}
+
+static void proc_scf(cpu_context *context) {
+    cpu_set_flags(context, -1, 0, 0, 1);
+}
+
+static void proc_ccf(cpu_context *context) {
+    cpu_set_flags(context, -1, 0, 0, CPU_FLAG_C ^ 1);
+}
+
+static void proc_halt(cpu_context *context) {
+    context->halted = true;
+}
+
+static void proc_rra(cpu_context *context) {
+    u8 carry = CPU_FLAG_C;
+    u8 new_c = context->regs.a & 1;
+
+    context->regs.a >>= 1;
+    context->regs.a |= (carry << 7);
+
+    cpu_set_flags(context, 0, 0, 0, new_c);
+}
+
 static void proc_and(cpu_context *context) {
     context->regs.a &= context->fetch_data;
     cpu_set_flags(context, context->regs.a == 0, 0, 1, 0);
@@ -190,6 +267,10 @@ static void proc_cp(cpu_context *context) {
 
 static void proc_di(cpu_context *context) {
     context->int_master_enabled = false;
+}
+
+static void proc_ei(cpu_context *context) {
+    context->enabling_ime = true;
 }
 
 static bool is_16_bit(reg_type rt) {
@@ -476,6 +557,17 @@ static IN_PROC processors[] = {
     [IN_OR] = proc_or,
     [IN_CP] = proc_cp,
     [IN_CB] = proc_cb,
+    [IN_RRCA] = proc_rrca,
+    [IN_RLCA] = proc_rlca,
+    [IN_RRA] = proc_rra,
+    [IN_RLA] = proc_rla,
+    [IN_STOP] = proc_stop,
+    [IN_HALT] = proc_halt,
+    [IN_DAA] = proc_daa,
+    [IN_CPL] = proc_cpl,
+    [IN_SCF] = proc_scf,
+    [IN_CCF] = proc_ccf,
+    [IN_EI] = proc_ei,
     [IN_RETI] = proc_reti
 };
 

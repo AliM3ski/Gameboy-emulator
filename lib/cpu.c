@@ -1,6 +1,7 @@
 #include <cpu.h>
 #include <bus.h>
 #include <emu.h>
+#include <interrupts.h>
 
 cpu_context context = {0};
 
@@ -44,14 +45,33 @@ bool cpu_step() {
         );
 
         printf("%08lX - %04X: %-7s (%02X %02X %02X) A: %02X F: %s BC: %02X%02X DE: %02X%02X HL: %02X%02X\n", 
-            emu_get_context()->ticks, pc, inst_name(context.cur_inst->type), context.cur_opcode,
-            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, flags, context.regs.b, context.regs.c, context.regs.d, context.regs.e, context.regs.h, context.regs.l);
+            emu_get_context()->ticks,
+            pc, inst_name(context.cur_inst->type), context.cur_opcode,
+            bus_read(pc + 1), bus_read(pc + 2), context.regs.a, flags, context.regs.b, context.regs.c,
+            context.regs.d, context.regs.e, context.regs.h, context.regs.l);
 
         if (context.cur_inst == NULL) {
             printf("Unknown Instruction! %02X\n", context.cur_opcode);
             exit(-7);
         }
+
         execute();
+    } else {
+        //is halted...
+        emu_cycles(1);
+
+        if (context.int_flags) {
+            context.halted = false;
+        }
+    }
+
+    if (context.int_master_enabled) {
+        cpu_handle_interrupts(&context);
+        context.enabling_ime = false;
+    }
+
+    if (context.enabling_ime) {
+        context.int_master_enabled = true;
     }
 
     return true;
@@ -60,6 +80,7 @@ bool cpu_step() {
 u8 cpu_get_ie_register() {
     return context.ie_register;
 }
+
 void cpu_set_ie_register(u8 n) {
     context.ie_register = n;
 }

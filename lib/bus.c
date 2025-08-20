@@ -15,7 +15,7 @@
 // 0xFE00 - 0xFE9F : Object Attribute Memory
 // 0xFEA0 - 0xFEFF : Reserved - Unusable
 // 0xFF00 - 0xFF7F : I/O Registers
-// 0xFF80 - 0xFFFE : Zero Page / High RAM
+// 0xFF80 - 0xFFFE : Zero Page
 
 u8 bus_read(u16 address) {
     if (address < 0x8000) {
@@ -23,36 +23,39 @@ u8 bus_read(u16 address) {
         return cart_read(address);
     } else if (address < 0xA000) {
         //Char/Map Data
-        // TODO
+        //TODO
         printf("UNSUPPORTED bus_read(%04X)\n", address);
         NO_IMPL
     } else if (address < 0xC000) {
-        // Cartridge RAM
+        //Cartridge RAM
         return cart_read(address);
     } else if (address < 0xE000) {
-        //WRAM (working RAM)
+        //WRAM (Working RAM)
         return wram_read(address);
     } else if (address < 0xFE00) {
-        // reserved echo RAM...
+        //reserved echo ram...
         return 0;
     } else if (address < 0xFEA0) {
-        // OAM
-        // TODO
+        //OAM
+        //TODO
         printf("UNSUPPORTED bus_read(%04X)\n", address);
-        NO_IMPL
+        //NO_IMPL
+        return 0x0;
     } else if (address < 0xFF00) {
-        // reserved unusable...
+        //reserved unusable...
         return 0;
     } else if (address < 0xFF80) {
-        // IO Registers...
-        // TODO
+        //IO Registers...
+        //TODO
         printf("UNSUPPORTED bus_read(%04X)\n", address);
-        NO_IMPL
+        //NO_IMPL
+        return 0x0;
     } else if (address == 0xFFFF) {
         //CPU ENABLE REGISTER...
-        // TODO
+        //TODO
         return cpu_get_ie_register();
     }
+
     //NO_IMPL
     return hram_read(address);
 }
@@ -65,7 +68,7 @@ void bus_write(u16 address, u8 value) {
         //Char/Map Data
         //TODO
         printf("UNSUPPORTED bus_write(%04X)\n", address);
-        NO_IMPL
+        //NO_IMPL
     } else if (address < 0xC000) {
         //EXT-RAM
         cart_write(address, value);
@@ -76,9 +79,10 @@ void bus_write(u16 address, u8 value) {
         //reserved echo ram
     } else if (address < 0xFEA0) {
         //OAM
+
         //TODO
         printf("UNSUPPORTED bus_write(%04X)\n", address);
-        NO_IMPL
+       // NO_IMPL
     } else if (address < 0xFF00) {
         //unusable reserved
     } else if (address < 0xFF80) {
@@ -89,11 +93,12 @@ void bus_write(u16 address, u8 value) {
     } else if (address == 0xFFFF) {
         //CPU SET ENABLE REGISTER
         
-       cpu_set_ie_register(value);
+        cpu_set_ie_register(value);
     } else {
         hram_write(address, value);
     }
 }
+
 u16 bus_read16(u16 address) {
     u16 lo = bus_read(address);
     u16 hi = bus_read(address + 1);

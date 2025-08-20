@@ -5,6 +5,7 @@
 typedef struct {
 	bool paused;
 	bool running;
+	bool die;
 	u64 ticks; // processor/timer ticks
 } emu_context; // data about the running emulator
 

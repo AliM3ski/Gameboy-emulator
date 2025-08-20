@@ -2,8 +2,11 @@
 #include <emu.h>
 #include <cart.h>
 #include <cpu.h>
-#include <SDL2/SDL.h> // for graphics library
-#include <SDL2/SDL_ttf.h> // for graphics library
+#include <ui.h>
+
+//TODO Add Windows Alternative...
+#include <pthread.h>
+#include <unistd.h>
 
 /*
 Emulator components:
@@ -22,49 +25,58 @@ emu_context *emu_get_context() {
 	return &context;
 }
 
-void delay(u32 ms) {
-	SDL_Delay(ms);
+void *cpu_run(void *p) {
+    cpu_init();
+
+    context.running = true;
+    context.paused = false;
+    context.ticks = 0;
+
+    while(context.running) {
+        if (context.paused) {
+            delay(10);
+            continue;
+        }
+
+        if (!cpu_step()) {
+            printf("CPU Stopped\n");
+            return 0;
+        }
+
+        context.ticks++;
+    }
+
+    return 0;
 }
 
 int emu_run(int argc, char **argv) {
-	// check to see if they passed in rom file
-	if (argc < 2) {
-		printf("ROM file not passed. Please pass in a ROM file\n");
-		return -1;
-	}
-	// return error if loading cart fails
-	if (!cart_load(argv[1])) {
-		printf("Failed to load ROM file: %s\n", argv[1]);
-		return -2;
-	}
+    if (argc < 2) {
+        printf("Usage: emu <rom_file>\n");
+        return -1;
+    }
 
-	printf("Cart loaded..\n");
+    if (!cart_load(argv[1])) {
+        printf("Failed to load ROM file: %s\n", argv[1]);
+        return -2;
+    }
 
-	SDL_Init(SDL_INIT_VIDEO);
-	printf("SDL Initalize\n");
-	TTF_Init();
-	printf("TTF initalize\n");
+    printf("Cart loaded..\n");
 
-	cpu_init();
+    ui_init();
+    
+    pthread_t t1;
 
-	context.running = true;
-	context.paused = false;
-	context.ticks = 0;
+    if (pthread_create(&t1, NULL, cpu_run, NULL)) {
+        fprintf(stderr, "FAILED TO START MAIN CPU THREAD!\n");
+        return -1;
+    }
 
-	// game loop
-	while(context.running) {
-		if (context.paused) {
-			delay(10);
-			continue;
-		}
+    while(!context.die) {
+        usleep(1000);
+        ui_handle_events();
+    }
 
-		if (!cpu_step()) {
-			printf("CPU Stopped\n");
-			return -3;
-		}
-		context.ticks++;
-	}
-	return 0;
+    return 0;
 }
 
 void emu_cycles(int cpu_cycles) {

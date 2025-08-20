@@ -11,10 +11,12 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/cpu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/emu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/instructions.h"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/interrupts.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ppu.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ram.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/stack.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/timer.h"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/ui.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -32,10 +34,12 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu_util.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/emu.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/instructions.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/interrupts.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ram.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/stack.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/timer.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ui.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

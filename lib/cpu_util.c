@@ -93,7 +93,14 @@ void cpu_set_reg8(reg_type rt, u8 val) {
     }
 }
 
-
 cpu_registers *cpu_get_regs() {
     return &context.regs;
+}
+
+u8 cpu_get_int_flags() {
+    return context.int_flags;
+}
+
+void cpu_set_int_flags(u8 value) {
+    context.int_flags = value;
 }
