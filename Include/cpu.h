@@ -4,38 +4,38 @@
 #include <instructions.h>
 
 typedef struct {
-	u8 a;
-	u8 f;
-	u8 b;
-	u8 c;
-	u8 d;
-	u8 e;
-	u8 h;
-	u8 l;
+    u8 a;
+    u8 f;
+    u8 b;
+    u8 c;
+    u8 d;
+    u8 e;
+    u8 h;
+    u8 l;
 	// program counter
-	u16 pc;
+    u16 pc;
 	// stack pointer
-	u16 sp;
+    u16 sp;
 } cpu_registers;
 
 typedef struct {
-	cpu_registers regs;
+    cpu_registers regs;
 
-	// current fetch..
-	u16 fetch_data;
-	u16 mem_dest;
-	bool dest_is_mem;
-	u8 cur_opcode;
-	instruction *cur_inst;
+    //current fetch...
+    u16 fetch_data;
+    u16 mem_dest;
+    bool dest_is_mem;
+    u8 cur_opcode;
+    instruction *cur_inst;
 
-	bool halted;
-	bool stepping;
-	
-	bool int_master_enabled;
-	bool enabling_ime;
-	u8 ie_register;
-	u8 int_flags;
+    bool halted;
+    bool stepping;
 
+    bool int_master_enabled;
+    bool enabling_ime;
+    u8 ie_register;
+    u8 int_flags;
+    
 } cpu_context;
 
 cpu_registers *cpu_get_regs();

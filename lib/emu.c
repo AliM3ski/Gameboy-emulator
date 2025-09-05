@@ -4,6 +4,8 @@
 #include <cpu.h>
 #include <ui.h>
 #include <timer.h>
+#include <dma.h>
+#include <ppu.h>
 
 //TODO Add Windows Alternative...
 #include <pthread.h>
@@ -29,6 +31,7 @@ emu_context *emu_get_context() {
 void *cpu_run(void *p) {
     timer_init();
     cpu_init();
+    ppu_init();
 
     context.running = true;
     context.paused = false;
@@ -71,20 +74,31 @@ int emu_run(int argc, char **argv) {
         return -1;
     }
 
+    u32 prev_frame = 0;
+
     while(!context.die) {
         usleep(1000);
         ui_handle_events();
+
+        if (prev_frame != ppu_get_context()->current_frame) {
+            ui_update();
+        }
+
+        prev_frame = ppu_get_context()->current_frame;
     }
 
     return 0;
 }
 
 void emu_cycles(int cpu_cycles) {
-    //TODO...
-    int n = cpu_cycles * 4;
+    
+    for (int i=0; i<cpu_cycles; i++) {
+        for (int n=0; n<4; n++) {
+            context.ticks++;
+            timer_tick();
+            ppu_tick();
+        }
 
-    for (int i=0; i<n; i++) {
-        context.ticks++;
-        timer_tick();
+        dma_tick();
     }
 }

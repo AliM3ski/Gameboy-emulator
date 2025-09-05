@@ -13,4 +13,4 @@ typedef enum {
 
 void cpu_request_interrupt(interrupt_type t);
 
-void cpu_handle_interrupts(cpu_context *ctx);
+void cpu_handle_interrupts(cpu_context *context);

@@ -7,6 +7,8 @@
 
 cpu_context context = {0};
 
+#define CPU_DEBUG 0
+
 void cpu_init() {
     context.regs.pc = 0x100;
     context.regs.sp = 0xFFFE;
@@ -48,6 +50,7 @@ bool cpu_step() {
         emu_cycles(1);
         fetch_data();
 
+#if CPU_DEBUG == 1
         char flags[16];
         sprintf(flags, "%c%c%c%c", 
             context.regs.f & (1 << 7) ? 'Z' : '-',
@@ -64,6 +67,7 @@ bool cpu_step() {
             pc, inst, context.cur_opcode,
             bus_read(pc + 1), bus_read(pc + 2), context.regs.a, flags, context.regs.b, context.regs.c,
             context.regs.d, context.regs.e, context.regs.h, context.regs.l);
+#endif
 
         if (context.cur_inst == NULL) {
             printf("Unknown Instruction! %02X\n", context.cur_opcode);
