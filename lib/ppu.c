@@ -3,6 +3,9 @@
 #include <string.h>
 #include <ppu_sm.h>
 
+void pipeline_fifo_reset();
+void pipeline_process();
+
 static ppu_context context;
 
 ppu_context *ppu_get_context() {
@@ -13,6 +16,13 @@ void ppu_init() {
     context.current_frame = 0;
     context.line_ticks = 0;
     context.video_buffer = malloc(YRES * XRES * sizeof(32));
+
+    context.pfc.line_x = 0;
+    context.pfc.pushed_x = 0;
+    context.pfc.fetch_x = 0;
+    context.pfc.pixel_fifo.size = 0;
+    context.pfc.pixel_fifo.head = context.pfc.pixel_fifo.tail = NULL;
+    context.pfc.cur_fetch_state = FS_TILE;
 
     lcd_init();
     LCDS_MODE_SET(MODE_OAM);

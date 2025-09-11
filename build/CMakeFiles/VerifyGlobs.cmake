@@ -45,6 +45,7 @@ set(OLD_GLOB
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/io.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/lcd.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu_pipeline.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ppu_sm.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/ram.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/stack.c"
