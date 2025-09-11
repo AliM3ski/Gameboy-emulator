@@ -24,6 +24,9 @@ void ppu_init() {
     context.pfc.pixel_fifo.head = context.pfc.pixel_fifo.tail = NULL;
     context.pfc.cur_fetch_state = FS_TILE;
 
+    context.line_sprites = 0;
+    context.fetched_entry_count = 0;
+
     lcd_init();
     LCDS_MODE_SET(MODE_OAM);
 

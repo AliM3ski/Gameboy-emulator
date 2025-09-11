@@ -2,9 +2,13 @@
 #include <lcd.h>
 #include <cpu.h>
 #include <interrupts.h>
+#include <string.h>
 
 // for windows
 #include <SDL.h>
+
+void pipeline_fifo_reset();
+void pipeline_process();
 
 void increment_ly() {
     lcd_get_context()->ly++;
@@ -20,6 +24,66 @@ void increment_ly() {
     }
 }
 
+void load_line_sprites() {
+    int cur_y = lcd_get_context()->ly;
+
+    Uint8 sprite_height = LCDC_OBJ_HEIGHT;
+    memset(ppu_get_context()->line_entry_array, 0, 
+        sizeof(ppu_get_context()->line_entry_array));
+
+    for (int i = 0; i < 40; i++) {
+        oam_entry e = ppu_get_context()->oam_ram[i];
+
+        if (!e.x) {
+            // x = 0 means not visible...
+            continue;
+        }
+
+        if (ppu_get_context()->line_sprite_count >= 10) {
+            // max 10 sprites per line...
+            break;
+        }
+
+        if (e.y <= cur_y + 16 && e.y + sprite_height > cur_y + 16) {
+            // this sprite is on the current line.
+
+            oam_line_entry *entry = &ppu_get_context()->line_entry_array[
+                ppu_get_context()->line_sprite_count++
+            ];
+
+            entry->entry = e;
+            entry->next = NULL;
+
+            if (!ppu_get_context()->line_sprites ||
+                    ppu_get_context()->line_sprites->entry.x > e.x) {
+                entry->next = ppu_get_context()->line_sprites;
+                ppu_get_context()->line_sprites = entry;
+                continue;
+            }
+
+            // do some sorting...
+            oam_line_entry *le = ppu_get_context()->line_sprites;
+            oam_line_entry *prev = le;
+
+            while (le) {
+                if (le->entry.x > e.x) {
+                    prev->next = entry;
+                    entry->next = le;
+                    break;
+                }
+
+                if (!le->next) {
+                    le->next = entry;
+                    break;
+                }
+
+                prev = le;
+                le = le->next;
+            }
+        }
+    }
+}
+
 void ppu_mode_oam() {
     if (ppu_get_context()->line_ticks >= 80) {
         LCDS_MODE_SET(MODE_XFER);
@@ -29,6 +93,14 @@ void ppu_mode_oam() {
         ppu_get_context()->pfc.fetch_x = 0;
         ppu_get_context()->pfc.pushed_x = 0;
         ppu_get_context()->pfc.fifo_x = 0;
+    }
+
+    if (ppu_get_context()->line_ticks == 1) {
+        // read oam on the first tick only...
+        ppu_get_context()->line_sprites = 0;
+        ppu_get_context()->line_sprite_count = 0;
+
+        load_line_sprites();
     }
 }
 
@@ -59,10 +131,10 @@ void ppu_mode_vblank() {
     }
 }
 
-static u32 target_frame_time = 1000 / 60;
-static long prev_frame_time = 0;
-static long start_timer = 0;
-static long frame_count = 0;
+static Uint32 target_frame_time = 1000 / 60;
+static Uint32 prev_frame_time = 0;
+static Uint32 start_timer = 0;
+static Uint32 frame_count = 0;
 
 void ppu_mode_hblank() {
     if (ppu_get_context()->line_ticks >= TICKS_PER_LINE) {
@@ -80,15 +152,15 @@ void ppu_mode_hblank() {
             ppu_get_context()->current_frame++;
 
             // calc FPS...
-            u32 end = SDL_GetTicks();
-            u32 frame_time = end - prev_frame_time;
+            Uint32 end = SDL_GetTicks();
+            Uint32 frame_time = end - prev_frame_time;
 
             if (frame_time < target_frame_time) {
                 SDL_Delay(target_frame_time - frame_time);
             }
 
             if (end - start_timer >= 1000) {
-                u32 fps = frame_count;
+                Uint32 fps = frame_count;
                 start_timer = end;
                 frame_count = 0;
 
