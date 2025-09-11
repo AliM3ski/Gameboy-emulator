@@ -1,13 +1,52 @@
 #include <cart.h>
+#include <string.h>
 
 typedef struct {
     char filename[1024];
     u32 rom_size;
     u8 *rom_data;
     rom_header *header;
+
+    //mbc1 related data
+    bool ram_enabled;
+    bool ram_banking;
+
+    u8 *rom_bank_x;
+    u8 banking_mode;
+
+    u8 rom_bank_value;
+    u8 ram_bank_value;
+
+    u8 *ram_bank; //current selected ram bank
+    u8 *ram_banks[16]; //all ram banks
+
+    //for battery
+    bool battery; //has battery
+    bool need_save; //should save battery backup.
 } cart_context;
 
 static cart_context context;
+
+// Helper: get the base filename (strips directories)
+const char* get_basename(const char* path) {
+    const char* base = strrchr(path, '/');
+    if (!base) base = strrchr(path, '\\');
+    if (base) return base + 1;
+    return path;
+}
+
+bool cart_need_save() {
+    return context.need_save;
+}
+
+bool cart_mbc1() {
+    return BETWEEN(context.header->type, 1, 3);
+}
+
+bool cart_battery() {
+    //mbc1 only for now...
+    return context.header->type == 3;
+}
 
 static const char *ROM_TYPES[] = {
     "ROM ONLY",
@@ -127,6 +166,23 @@ const char *cart_type_name() {
     return "UNKNOWN";
 }
 
+void cart_setup_banking() {
+    for (int i=0; i<16; i++) {
+        context.ram_banks[i] = 0;
+
+        if ((context.header->ram_size == 2 && i == 0) ||
+            (context.header->ram_size == 3 && i < 4) || 
+            (context.header->ram_size == 4 && i < 16) || 
+            (context.header->ram_size == 5 && i < 8)) {
+            context.ram_banks[i] = malloc(0x2000);
+            memset(context.ram_banks[i], 0, 0x2000);
+        }
+    }
+
+    context.ram_bank = context.ram_banks[0];
+    context.rom_bank_x = context.rom_data + 0x4000; //rom bank 1
+}
+
 bool cart_load(char *cart) {
     snprintf(context.filename, sizeof(context.filename), "%s", cart);
 
@@ -150,6 +206,8 @@ bool cart_load(char *cart) {
 
     context.header = (rom_header *)(context.rom_data + 0x100);
     context.header->title[15] = 0;
+    context.battery = cart_battery();
+    context.need_save = false;
 
     printf("Cartridge Loaded:\n");
     printf("\t Title    : %s\n", context.header->title);
@@ -159,6 +217,8 @@ bool cart_load(char *cart) {
     printf("\t LIC Code : %2.2X (%s)\n", context.header->lic_code, cart_lic_name());
     printf("\t ROM Vers : %2.2X\n", context.header->version);
 
+    cart_setup_banking();
+
     u16 x = 0;
     for (u16 i=0x0134; i<=0x014C; i++) {
         x = x - context.rom_data[i] - 1;
@@ -166,18 +226,131 @@ bool cart_load(char *cart) {
 
     printf("\t Checksum : %2.2X (%s)\n", context.header->checksum, (x & 0xFF) ? "PASSED" : "FAILED");
 
+    if (context.battery) {
+        cart_battery_load();
+    }
+
     return true;
 }
 
-u8 cart_read(u16 address) {
-    //for now just ROM ONLY type supported...
+void cart_battery_load() {
+    if (!context.ram_bank) {
+        return;
+    }
 
-    return context.rom_data[address];
+    char fn[1048];
+    sprintf(fn, "../saves/%s.battery", get_basename(context.filename));
+
+    FILE *fp = fopen(fn, "rb");
+    if (!fp) {
+        fprintf(stderr, "FAILED TO OPEN: %s\n", fn);
+        return;
+    }
+
+    fread(context.ram_bank, 0x2000, 1, fp);
+    fclose(fp);
+}
+
+void cart_battery_save() {
+    if (!context.ram_bank) {
+        return;
+    }
+
+    char fn[1048];
+    sprintf(fn, "../saves/%s.battery", get_basename(context.filename));
+    FILE *fp = fopen(fn, "wb");
+
+    if (!fp) {
+        fprintf(stderr, "FAILED TO OPEN: %s\n", fn);
+        return;
+    }
+
+    fwrite(context.ram_bank, 0x2000, 1, fp);
+    fclose(fp);
+}
+
+u8 cart_read(u16 address) {
+    if (!cart_mbc1() || address < 0x4000) {
+        return context.rom_data[address];
+    }
+
+    if ((address & 0xE000) == 0xA000) {
+        if (!context.ram_enabled) {
+            return 0xFF;
+        }
+
+        if (!context.ram_bank) {
+            return 0xFF;
+        }
+
+        return context.ram_bank[address - 0xA000];
+    }
+
+    return context.rom_bank_x[address - 0x4000];
 }
 
 void cart_write(u16 address, u8 value) {
-    //for now, ROM ONLY...
+    if (!cart_mbc1()) {
+        return;
+    }
 
-    printf("cart_write(%04X)\n", address);
-    //NO_IMPL
+    if (address < 0x2000) {
+        context.ram_enabled = ((value & 0xF) == 0xA);
+    }
+
+    if ((address & 0xE000) == 0x2000) {
+        //rom bank number
+        if (value == 0) {
+            value = 1;
+        }
+
+        value &= 0b11111;
+
+        context.rom_bank_value = value;
+        context.rom_bank_x = context.rom_data + (0x4000 * context.rom_bank_value);
+    }
+
+    if ((address & 0xE000) == 0x4000) {
+        //ram bank number
+        context.ram_bank_value = value & 0b11;
+
+        if (context.ram_banking) {
+            if (cart_need_save()) {
+                cart_battery_save();
+            }
+
+            context.ram_bank = context.ram_banks[context.ram_bank_value];
+        }
+    }
+
+    if ((address & 0xE000) == 0x6000) {
+        //banking mode select
+        context.banking_mode = value & 1;
+
+        context.ram_banking = context.banking_mode;
+
+        if (context.ram_banking) {
+            if (cart_need_save()) {
+                cart_battery_save();
+            }
+            
+            context.ram_bank = context.ram_banks[context.ram_bank_value];
+        }
+    }
+
+    if ((address & 0xE000) == 0xA000) {
+        if (!context.ram_enabled) {
+            return;
+        }
+
+        if (!context.ram_bank) {
+            return;
+        }
+
+        context.ram_bank[address - 0xA000] = value;
+
+        if (context.battery) {
+            context.need_save = true;
+        }
+    }
 }
