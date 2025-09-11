@@ -39,10 +39,7 @@ void dma_tick() {
 
     context.active = context.byte < 0xA0;
 
-    if (!context.active) {
-        printf("DMA DONE!\n");
-        usleep(2000000); 
-    }
+
 }
 
 bool dma_transferring() {

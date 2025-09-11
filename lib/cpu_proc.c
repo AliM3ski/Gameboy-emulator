@@ -195,7 +195,7 @@ static void proc_rla(cpu_context *context) {
 
 static void proc_stop(cpu_context *context) {
     fprintf(stderr, "STOPPING!\n");
-    NO_IMPL
+    //NO_IMPL
 }
 
 static void proc_daa(cpu_context *context) {
@@ -303,7 +303,7 @@ static void proc_ld(cpu_context *context) {
 
         cpu_set_flags(context, 0, 0, hflag, cflag);
         cpu_set_reg(context->cur_inst->reg_1, 
-            cpu_read_reg(context->cur_inst->reg_2) + (char)context->fetch_data);
+            cpu_read_reg(context->cur_inst->reg_2) + (int8_t)context->fetch_data);
 
         return;
     }
@@ -354,9 +354,8 @@ static void proc_jp(cpu_context *context) {
 }
 
 static void proc_jr(cpu_context *context) {
-    int8_t rel = (char)(context->fetch_data & 0xFF);
+    int8_t rel = (int8_t)(context->fetch_data & 0xFF);
     u16 addr = context->regs.pc + rel;
-
     goto_addr(context, addr, false);
 }
 
@@ -510,7 +509,7 @@ static void proc_add(cpu_context *context) {
     }
 
     if (context->cur_inst->reg_1 == RT_SP) {
-        val = cpu_read_reg(context->cur_inst->reg_1) + (char)context->fetch_data;
+        val = cpu_read_reg(context->cur_inst->reg_1) + (int8_t)context->fetch_data;
     }
 
     int z = (val & 0xFF) == 0;
