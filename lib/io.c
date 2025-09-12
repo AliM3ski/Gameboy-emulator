@@ -4,6 +4,7 @@
 #include <timer.h>
 #include <cpu.h>
 #include <gamepad.h>
+#include <apu.h>   // <-- add this
 
 static char serial_data[2];
 
@@ -26,6 +27,11 @@ u8 io_read(u16 address) {
 
     if (address == 0xFF0F) {
         return cpu_get_int_flags();
+    }
+
+    // 🎵 APU range
+    if (BETWEEN(address, 0xFF10, 0xFF3F)) {
+        return apu_read(address);
     }
 
     if (BETWEEN(address, 0xFF40, 0xFF4B)) {
@@ -62,10 +68,16 @@ void io_write(u16 address, u8 value) {
         return;
     }
 
+    // 🎵 APU range
+    if (BETWEEN(address, 0xFF10, 0xFF3F)) {
+        apu_write(address, value);
+        return;
+    }
+
     if (BETWEEN(address, 0xFF40, 0xFF4B)) {
         lcd_write(address, value);
         return;
     }
 
-    printf("UNSUPPORTED bus_write(%04X)\n", address);
+    printf("UNSUPPORTED bus_write(%04X, %02X)\n", address, value);
 }

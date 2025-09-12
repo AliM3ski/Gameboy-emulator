@@ -5,6 +5,8 @@ cmake_policy(SET CMP0009 NEW)
 # headers at lib/CMakeLists.txt:5 (file)
 file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/*.h")
 set(OLD_GLOB
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/apu.h"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/audio.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/bus.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/cart.h"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/include/common.h"
@@ -32,6 +34,8 @@ endif()
 # sources at lib/CMakeLists.txt:3 (file)
 file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/*.c")
 set(OLD_GLOB
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/apu.c"
+  "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/audio.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/bus.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cart.c"
   "C:/Users/AliMe/VsCodeProjects/Gameboy emulator/lib/cpu.c"
